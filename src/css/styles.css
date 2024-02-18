@@ -19,11 +19,10 @@
   border-radius: 8px;
   padding: 8px 16px;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
-
 }
 
-.submit-btn:hover{
-    background-color: #6C8CFF;
+.submit-btn:hover {
+  background-color: #6c8cff;
 }
 
 input[data-userInput] {
