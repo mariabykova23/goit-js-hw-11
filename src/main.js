@@ -14,8 +14,6 @@ const searchForm = document.querySelector('.form');
 const containerForImages = document.querySelector('.container-imgs');
 const loadDiv = document.querySelector('.hidden-load');
 
-const iziToastBlock = document.querySelector('.iziToast-message');
-
 const imgSearch = new imgPix();
 
 function imgCreate({
