@@ -21,7 +21,6 @@ const userKeyWordInput = document.querySelector('[data-userInput]');
 
 let page = 1;
 
-
 function imgCreate({
   largeImageURL,
   webformatURL,
@@ -66,55 +65,50 @@ function renderImages(images) {
   lightBoxShow();
 }
 
-searchForm.addEventListener('submit', (ev)=>{
+searchForm.addEventListener('submit', ev => {
   ev.preventDefault();
-  const userKeyWord=userKeyWordInput.value.trim();
+  const userKeyWord = userKeyWordInput.value.trim();
   onSubmit(userKeyWord);
-  // userKeyWordInput.value = '';
 });
 
-loadMorePictures.addEventListener('click', (e)=>{
+loadMorePictures.addEventListener('click', e => {
   e.preventDefault();
-  const userKeyWord=userKeyWordInput.value.trim();
+  const userKeyWord = userKeyWordInput.value.trim();
   loadMore(userKeyWord);
 });
 
 function loadMore(userKeyWord) {
   let newPage = page + 1;
-  
+
   imgSearch
-  .getImage(userKeyWord, newPage)
-  .then(data => {
-    let maxPages = Math.ceil(data.totalHits / 20);
-    if (newPage <= maxPages) {
-      loadMorePictures.classList.add('load-morepics-on');
-      console.log(data);
-      renderImages(data.hits);
-      return;
-    } else {
+    .getImage(userKeyWord, newPage)
+    .then(data => {
+      let maxPages = Math.ceil(data.totalHits / 20);
+      if (newPage <= maxPages) {
+        loadMorePictures.classList.add('load-morepics-on');
+        console.log(data);
+        renderImages(data.hits);
+        return;
+      } else {
+        loadMorePictures.classList.remove('load-morepics-on');
+      }
+    })
+    .catch(err => {
+      console.error('Error loading images:', err);
       loadMorePictures.classList.remove('load-morepics-on');
-    }
-   
-  })
-  .catch(err => {
-    console.error('Error loading images:', err);
-    loadMorePictures.classList.remove('load-morepics-on');
-  });
+    });
   page++;
 }
 
 function onSubmit(userKeyWord) {
-  
   loadDiv.classList.add('loader');
 
-  
-
+  loadMorePictures.classList.add('load-morepics-on');
 
   imgSearch
     .getImage(userKeyWord, page)
     .then(data => {
       if (data.totalHits > 0) {
-        loadMorePictures.classList.add('load-morepics-on');
         const img = data.hits;
         renderImages(img);
       } else {
@@ -167,6 +161,3 @@ document
   .addEventListener('input', function () {
     containerForImages.innerHTML = '';
   });
-
-
-
