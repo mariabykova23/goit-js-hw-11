@@ -10,64 +10,22 @@ import { imgPix } from './js/pixabay-api';
 
 import icon from './img/x-icon.svg';
 
+import { renderImages } from './js/render-functions';
+
 const searchForm = document.querySelector('.form');
 const containerForImages = document.querySelector('.container-imgs');
 const loadDiv = document.querySelector('.hidden-load');
 const loadMorePictures = document.querySelector('.load-morepics');
+const userKeyWordInput = document.querySelector('[data-userInput]');
 
 const imgSearch = new imgPix();
 
-const userKeyWordInput = document.querySelector('[data-userInput]');
-
 let page = 1;
-
-function imgCreate({
-  largeImageURL,
-  webformatURL,
-  tags,
-  likes,
-  views,
-  comments,
-  downloads,
-}) {
-  const container = `<div class="gallery">
-  <div class="container-img-wrap">
-    <a href="${largeImageURL}" class="img-link">
-        <img src="${webformatURL}" alt="${tags}" title="${tags}" />
-      </a>
-  </div>
-  <table border="0" class="image-descrip">
-    <tr class="td-descrip">
-      <td>Likes</td>
-      <td>Views</td>
-      <td>Comments</td>
-      <td>Downloads</td>
-    </tr>
-    <tr class="td-result">
-      <td>${likes}</td>
-      <td>${views}</td>
-      <td>${comments}</td>
-      <td>${downloads}</td>
-    </tr>
-  </table>
-</div>`;
-
-  return container;
-}
-
-function imgsCreate(images) {
-  return images.map(imgCreate).join('');
-}
-
-function renderImages(images) {
-  const markup = imgsCreate(images);
-  containerForImages.innerHTML += markup;
-  lightBoxShow();
-}
 
 searchForm.addEventListener('submit', ev => {
   ev.preventDefault();
   const userKeyWord = userKeyWordInput.value.trim();
+  page = 1;
   onSubmit(userKeyWord);
 });
 
@@ -86,7 +44,6 @@ function loadMore(userKeyWord) {
       let maxPages = Math.ceil(data.totalHits / 20);
       if (newPage <= maxPages) {
         loadMorePictures.classList.add('load-morepics-on');
-        console.log(data);
         renderImages(data.hits);
         return;
       } else {
