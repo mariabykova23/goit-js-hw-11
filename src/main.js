@@ -103,8 +103,6 @@ function loadMore(userKeyWord) {
 function onSubmit(userKeyWord) {
   loadDiv.classList.add('loader');
 
-  loadMorePictures.classList.add('load-morepics-on');
-
   imgSearch
     .getImage(userKeyWord, page)
     .then(data => {
@@ -136,6 +134,7 @@ function onSubmit(userKeyWord) {
     })
     .finally(() => {
       loadDiv.classList.remove('loader');
+      loadMorePictures.classList.add('load-morepics-on');
     });
 
   loadMore(userKeyWord);
