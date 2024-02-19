@@ -132,6 +132,7 @@ function onSubmit(userKeyWord) {
     .catch(err => {
       console.log(err);
       loadMorePictures.classList.remove('load-morepics-on');
+      lightbox.on('show.simplelightbox');
     })
     .finally(() => {
       loadDiv.classList.remove('loader');
