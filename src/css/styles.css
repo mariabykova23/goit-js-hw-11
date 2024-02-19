@@ -167,3 +167,28 @@ td {
   height: 16px;
   width: 16px;
 }
+
+
+.load-morepics{
+  background-color: #4e75ff;
+  display: none;
+  border: none;
+  color: #ffffff;
+  width: 91px;
+  font-family: 'Montserrat';
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 4%;
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.load-morepics-on{
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.load-morepics:hover {
+  background-color: #6c8cff;
+}

@@ -13,8 +13,14 @@ import icon from './img/x-icon.svg';
 const searchForm = document.querySelector('.form');
 const containerForImages = document.querySelector('.container-imgs');
 const loadDiv = document.querySelector('.hidden-load');
+const loadMorePictures = document.querySelector('.load-morepics');
 
 const imgSearch = new imgPix();
+
+const userKeyWordInput = document.querySelector('[data-userInput]');
+
+let page = 1;
+
 
 function imgCreate({
   largeImageURL,
@@ -56,23 +62,59 @@ function imgsCreate(images) {
 
 function renderImages(images) {
   const markup = imgsCreate(images);
-  containerForImages.innerHTML = markup;
+  containerForImages.innerHTML += markup;
   lightBoxShow();
 }
 
-searchForm.addEventListener('submit', onSubmit);
+searchForm.addEventListener('submit', (ev)=>{
+  ev.preventDefault();
+  const userKeyWord=userKeyWordInput.value.trim();
+  onSubmit(userKeyWord);
+  // userKeyWordInput.value = '';
+});
 
-function onSubmit(e) {
+loadMorePictures.addEventListener('click', (e)=>{
   e.preventDefault();
+  const userKeyWord=userKeyWordInput.value.trim();
+  loadMore(userKeyWord);
+});
 
+function loadMore(userKeyWord) {
+  let newPage = page + 1;
+  
+  imgSearch
+  .getImage(userKeyWord, newPage)
+  .then(data => {
+    let maxPages = Math.ceil(data.totalHits / 20);
+    if (newPage <= maxPages) {
+      loadMorePictures.classList.add('load-morepics-on');
+      console.log(data);
+      renderImages(data.hits);
+      return;
+    } else {
+      loadMorePictures.classList.remove('load-morepics-on');
+    }
+   
+  })
+  .catch(err => {
+    console.error('Error loading images:', err);
+    loadMorePictures.classList.remove('load-morepics-on');
+  });
+  page++;
+}
+
+function onSubmit(userKeyWord) {
+  
   loadDiv.classList.add('loader');
 
-  const userKeyWord = document.querySelector('[data-userInput]').value.trim();
+  
+
 
   imgSearch
-    .getImage(userKeyWord)
+    .getImage(userKeyWord, page)
     .then(data => {
       if (data.totalHits > 0) {
+        loadMorePictures.classList.add('load-morepics-on');
         const img = data.hits;
         renderImages(img);
       } else {
@@ -98,9 +140,10 @@ function onSubmit(e) {
     })
     .finally(() => {
       loadDiv.classList.remove('loader');
+      loadMorePictures.classList.remove('load-morepics-on');
     });
 
-  e.target.reset();
+  loadMore(userKeyWord);
 }
 
 function lightBoxShow() {
@@ -124,3 +167,6 @@ document
   .addEventListener('input', function () {
     containerForImages.innerHTML = '';
   });
+
+
+
