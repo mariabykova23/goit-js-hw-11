@@ -45,6 +45,7 @@ function loadMore(userKeyWord) {
       if (newPage <= maxPages) {
         loadMorePictures.classList.add('load-morepics-on');
         renderImages(data.hits);
+        lightBoxShow();
         return;
       } else {
         loadMorePictures.classList.remove('load-morepics-on');
