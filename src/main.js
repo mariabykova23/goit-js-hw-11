@@ -66,6 +66,7 @@ function onSubmit(userKeyWord) {
       if (data.totalHits > 0) {
         const img = data.hits;
         renderImages(img);
+        lightBoxShow();
       } else {
         iziToast.show({
           position: 'topRight',
@@ -93,7 +94,6 @@ function onSubmit(userKeyWord) {
       loadDiv.classList.remove('loader');
       loadMorePictures.classList.add('load-morepics-on');
     });
-
   loadMore(userKeyWord);
 }
 
