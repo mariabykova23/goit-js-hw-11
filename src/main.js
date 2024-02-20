@@ -17,6 +17,7 @@ const containerForImages = document.querySelector('.container-imgs');
 const loadDiv = document.querySelector('.hidden-load');
 const loadMorePictures = document.querySelector('.load-morepics');
 const userKeyWordInput = document.querySelector('[data-userInput]');
+const dashDelete=document.querySelector('.sl-counter');
 
 const imgSearch = new imgPix();
 
@@ -46,6 +47,7 @@ function loadMore(userKeyWord) {
         loadMorePictures.classList.add('load-morepics-on');
         renderImages(data.hits);
         lightBoxShow();
+        dashDelete.textContent='';
         return;
       } else {
         loadMorePictures.classList.remove('load-morepics-on');
@@ -102,11 +104,10 @@ function lightBoxShow() {
   const lightbox = new SimpleLightbox('.container-img-wrap a', {
     close: true,
     captionsData: 'alt',
-    captionDelay: 250,
+    captionDelay: 50,
     captionsPosition: 'bottom',
-    animationSpeed: 10,
+    animationSpeed: 1,
     captionSelector: 'img',
-    enableKeyboard: true,
     loop: true,
   });
 

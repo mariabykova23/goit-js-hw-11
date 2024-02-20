@@ -199,3 +199,11 @@ td {
 .load-morepics:hover {
   background-color: #6c8cff;
 }
+
+div.sl-counter>span{
+  color:transparent;
+}
+
+.sl-counter{
+  display: none !important;
+}
