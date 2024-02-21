@@ -16,11 +16,12 @@ const searchForm = document.querySelector('.form');
 const containerForImages = document.querySelector('.container-imgs');
 const loadDiv = document.querySelector('.hidden-load');
 const loadMorePictures = document.querySelector('.load-morepics');
-const userKeyWordInput = document.querySelector('[data-userInput]');
+const userKeyWordInput = document.querySelector('.data-userInput');
 
 const imgSearch = new imgPix();
 
 let page = 1;
+let maxPages;
 
 searchForm.addEventListener('submit', ev => {
   ev.preventDefault();
@@ -33,6 +34,7 @@ loadMorePictures.addEventListener('click', e => {
   e.preventDefault();
   const userKeyWord = userKeyWordInput.value.trim();
   loadMore(userKeyWord);
+  noMorePages();
 });
 
 function loadMore(userKeyWord) {
@@ -49,11 +51,11 @@ function loadMore(userKeyWord) {
         return;
       } else {
         loadMorePictures.classList.remove('load-morepics-on');
+        noMorePages(newPage, maxPages);
       }
     })
-    .catch(err => {
-      console.error('Error loading images:', err);
-      loadMorePictures.classList.remove('load-morepics-on');
+    .catch(error => {
+      console.error('Error loading images:', error);
     });
   page++;
 }
@@ -68,6 +70,7 @@ function onSubmit(userKeyWord) {
         const img = data.hits;
         renderImages(img);
         lightBoxShow();
+        loadMorePictures.classList.add('load-morepics-on');
       } else {
         iziToast.show({
           position: 'topRight',
@@ -87,15 +90,25 @@ function onSubmit(userKeyWord) {
       }
     })
     .catch(err => {
-      console.log(err);
-      loadMorePictures.classList.remove('load-morepics-on');
-      lightbox.on('show.simplelightbox');
+      iziToast.error({
+        position: 'topRight',
+        iconUrl: icon,
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+        messageColor: '#FFFFFF',
+        messageSize: '16',
+        messageLineHeight: '15',
+        backgroundColor: '#EF4040',
+        timeout: 5000,
+        displayMode: 2,
+        close: true,
+        closeOnEscape: true,
+        closeOnClick: true,
+      });
     })
     .finally(() => {
       loadDiv.classList.remove('loader');
-      loadMorePictures.classList.add('load-morepics-on');
     });
-  loadMore(userKeyWord);
 }
 
 function lightBoxShow() {
@@ -114,7 +127,25 @@ function lightBoxShow() {
 }
 
 document
-  .querySelector('[data-userInput]')
+  .querySelector('.data-userInput')
   .addEventListener('input', function () {
     containerForImages.innerHTML = '';
   });
+
+function noMorePages(newPage, maxPages) {
+  if (newPage > maxPages) {
+    iziToast.show({
+      position: 'topRight',
+      message: 'Sorry, there are no images to load!',
+      messageColor: 'black',
+      messageSize: '16',
+      messageLineHeight: '15',
+      backgroundColor: 'yellow',
+      timeout: 5000,
+      displayMode: 2,
+      close: true,
+      closeOnEscape: true,
+      closeOnClick: true,
+    });
+  }
+};
