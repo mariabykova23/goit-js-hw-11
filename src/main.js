@@ -130,6 +130,7 @@ document
   .querySelector('.data-userInput')
   .addEventListener('input', function () {
     containerForImages.innerHTML = '';
+    loadMorePictures.classList.remove('load-morepics-on');
   });
 
 function noMorePages(newPage, maxPages) {
