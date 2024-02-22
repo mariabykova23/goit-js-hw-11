@@ -25,6 +25,7 @@ let maxPages;
 
 searchForm.addEventListener('submit', ev => {
   ev.preventDefault();
+  clearGallery();
   const userKeyWord = userKeyWordInput.value.trim();
   page = 1;
   onSubmit(userKeyWord);
@@ -126,13 +127,6 @@ function lightBoxShow() {
   lightbox.refresh();
 }
 
-document
-  .querySelector('.data-userInput')
-  .addEventListener('input', function () {
-    containerForImages.innerHTML = '';
-    loadMorePictures.classList.remove('load-morepics-on');
-  });
-
 function noMorePages(newPage, maxPages) {
   if (newPage > maxPages) {
     iziToast.show({
@@ -149,4 +143,9 @@ function noMorePages(newPage, maxPages) {
       closeOnClick: true,
     });
   }
-};
+}
+
+function clearGallery() {
+  containerForImages.innerHTML = '';
+  loadMorePictures.classList.remove('load-morepics-on');
+}
